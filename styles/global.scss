@@ -518,6 +518,16 @@ input[type="search"]::-webkit-search-results-decoration {
 .dark-theme.monochrome-theme .renderable-alt{
   color: var(--type-black); 
 }
+.dark-mode-diagram {
+  display: none;
+}
+.dark-theme .light-mode-diagram {
+  display: none;
+}
+
+.dark-theme .dark-mode-diagram {
+  display: block;
+}
 
 .skip-to-main {
   position: absolute;
