@@ -228,10 +228,42 @@ It also has the following per-vertex attributes:
 
 ## Classes
 
+<div class="light-mode-diagram">
 ```mermaid
 ---
 title: p5.js WebGL Classes
 ---
+classDiagram
+  class Base["p5.Renderer"] {
+  }
+  class P2D["p5.Renderer2D"] {
+  }
+  class WebGL["p5.RendererGL"] {
+  }
+  class Geometry["p5.Geometry"] {
+  }
+  class Shader["p5.Shader"] {
+  }
+  class Texture["p5.Texture"] {
+  }
+  class Framebuffer["p5.Framebuffer"] {
+  }
+  Base <|-- P2D
+  Base <|-- WebGL
+  WebGL "*" o-- "*" Geometry
+  WebGL "1" *-- "*" Shader
+  WebGL "1" *-- "*" Texture
+  WebGL "1" *-- "*" Framebuffer
+```
+</div>
+
+
+<div class="dark-mode-diagram">
+```mermaid
+---
+title: p5.js WebGL Classes
+---
+%%{init: { "theme": "dark" }}%%
 classDiagram
     class Base["p5.Renderer"] {
     }
@@ -253,7 +285,8 @@ classDiagram
     WebGL "1" *-- "*" Shader
     WebGL "1" *-- "*" Texture
     WebGL "1" *-- "*" Framebuffer
-```
+    ```
+</div>
 
 The entry point to most WebGL code is through **p5.RendererGL**. Top-level p5.js functions are passed to the current renderer. Both 2D and WebGL modes have renderer classes that conform to a common `p5.Renderer` interface. Immediate mode and retained mode functions are split up into `p5.RendererGL.Immediate.js` and `p5.RendererGL.Retained.js`.
 
@@ -272,3 +305,5 @@ Currently, WebGL mode is functional for a variety of tasks, but many users and l
 * **Extend p5.Geometry to support richer content.** Creating geometry is possible, but many tasks a user might want to accomplish are not yet supported with a stable API. One might want to efficiently update geometry, which is necessary to support animated gltf models. One might want to group multiple materials in one object, if they are present in an imported model. One might want to add custom vertex attributes for a shader to work with. These tasks are currently unsupported.
 * **Enable less brittle custom shaders.** To create a shader that integrates p5.js's lighting and materials system, a user is currently forced to create shaders from scratch. These shaders often copy and paste parts of default shaders. This may break between versions if internal naming or structure changes. To be less brittle, libraries should be able to import and reuse default pieces. This lets libraries reuse positioning logic or augment positioning logic but reuse shading logic. There is currently [an issue open for this task.](https://github.com/processing/p5.js/issues/6144/)
 * **Improve performance.** WebGL mode tries to strike a balance between features and performance. One method is to introduce APIs to tune output quality, like how `curveDetail()` allows faster but lower-quality curves. Line rendering is one of the common performance bottlenecks in its present state, and it could benefit from having lower fidelity but higher performance options. Another method is to introduce new types of objects and rendering methods that are optimized for different usage patterns, like how `endShape(shouldClose, count)` now supports WebGL 2 instanced rendering for more efficient drawing of many shapes.
+
+
